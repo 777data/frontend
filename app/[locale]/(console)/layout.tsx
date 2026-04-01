@@ -120,7 +120,7 @@ export default function ConsoleLayout({ children }: Props) {
       <main className={classes.main}>
         <div className={classes.rightHeader}>
           <Container className={classes.rightHeaderMain} size="lg">
-            <Group justify="space-between">
+            <Group justify="flex-end">
               <Burger
                 opened={opened}
                 onClick={toggle}
