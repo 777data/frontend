@@ -19,8 +19,9 @@
 
 .contentArea {
   flex: 1;
+  min-height: 0;
   padding: var(--mantine-spacing-lg);
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7));
 }
 
 .rightHeader {
@@ -90,7 +91,6 @@
 .header {
   padding-bottom: var(--mantine-spacing-md);
   margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
-  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .brandFull {
@@ -108,7 +108,6 @@
 .footer {
   padding-top: var(--mantine-spacing-md);
   margin-top: var(--mantine-spacing-md);
-  border-top: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
 .link {
