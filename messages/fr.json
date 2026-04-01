@@ -26,5 +26,20 @@
   },
   "LocaleSwitcher": {
     "aria": "Changer la langue"
+  },
+  "ConsoleLayout": {
+    "menu": {
+      "dashboard": "Tableau de bord",
+      "citizenAlerts": "Alertes citoyennes",
+      "agenda": "Agenda",
+      "consultations": "Consultations",
+      "messaging": "Messagerie",
+      "publications": "Publications",
+      "reports": "Signalements",
+      "myTasks": "Mes tâches"
+    },
+    "footer": {
+      "settings": "Paramétrage"
+    }
   }
 }

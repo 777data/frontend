@@ -4,27 +4,29 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import {
-  Icon2fa,
-  IconBellRinging,
-  IconDatabaseImport,
-  IconFingerprint,
-  IconKey,
-  IconLogout,
-  IconReceipt2,
+  IconAlertTriangle,
+  IconCalendarEvent,
+  IconChecklist,
+  IconClipboardText,
+  IconFlag,
+  IconLayoutDashboard,
+  IconMessageCircle,
+  IconNews,
   IconSettings,
-  IconSwitchHorizontal,
 } from '@tabler/icons-react';
 import { Code, Group, Text } from '@mantine/core';
+import { useTranslations } from "next-intl";
 import classes from './layout.module.css';
 
 const data = [
-  { link: '', label: 'Notifications', icon: IconBellRinging },
-  { link: '', label: 'Billing', icon: IconReceipt2 },
-  { link: '', label: 'Security', icon: IconFingerprint },
-  { link: '', label: 'SSH Keys', icon: IconKey },
-  { link: '', label: 'Databases', icon: IconDatabaseImport },
-  { link: '', label: 'Authentication', icon: Icon2fa },
-  { link: '', label: 'Other Settings', icon: IconSettings },
+  { link: '', key: 'dashboard', icon: IconLayoutDashboard },
+  { link: '', key: 'citizenAlerts', icon: IconAlertTriangle },
+  { link: '', key: 'agenda', icon: IconCalendarEvent },
+  { link: '', key: 'consultations', icon: IconClipboardText },
+  { link: '', key: 'messaging', icon: IconMessageCircle },
+  { link: '', key: 'publications', icon: IconNews },
+  { link: '', key: 'reports', icon: IconFlag },
+  { link: '', key: 'myTasks', icon: IconChecklist },
 ];
 
 type Props = {
@@ -32,22 +34,23 @@ type Props = {
 };
 
 export default function ConsoleLayout({ children }: Props) {
-  const [active, setActive] = useState("Billing");
+  const t = useTranslations("ConsoleLayout");
+  const [active, setActive] = useState("dashboard");
 
   const links = data.map((item) => (
     <a
       className={classes.link}
-      aria-label={item.label}
-      data-active={item.label === active || undefined}
+      aria-label={t(`menu.${item.key}`)}
+      data-active={item.key === active || undefined}
       href={item.link}
-      key={item.label}
+      key={item.key}
       onClick={(event) => {
         event.preventDefault();
-        setActive(item.label);
+        setActive(item.key);
       }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} aria-hidden />
-      <span className={classes.linkLabel}>{item.label}</span>
+      <span className={classes.linkLabel}>{t(`menu.${item.key}`)}</span>
     </a>
   ));
 
@@ -79,21 +82,11 @@ export default function ConsoleLayout({ children }: Props) {
           <a
             href="#"
             className={classes.link}
-            aria-label="Change account"
+            aria-label={t("footer.settings")}
             onClick={(event) => event.preventDefault()}
           >
-            <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} aria-hidden />
-            <span className={classes.linkLabel}>Change account</span>
-          </a>
-
-          <a
-            href="#"
-            className={classes.link}
-            aria-label="Logout"
-            onClick={(event) => event.preventDefault()}
-          >
-            <IconLogout className={classes.linkIcon} stroke={1.5} aria-hidden />
-            <span className={classes.linkLabel}>Logout</span>
+            <IconSettings className={classes.linkIcon} stroke={1.5} aria-hidden />
+            <span className={classes.linkLabel}>{t("footer.settings")}</span>
           </a>
         </div>
       </nav>
