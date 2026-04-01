@@ -1,0 +1,24 @@
+{
+  "LocaleLayout": {
+    "title": "Urblink",
+    "description": "Application Urblink"
+  },
+  "HomePage": {
+    "button": "Mon premier bouton",
+    "loginLink": "Connexion"
+  },
+  "LoginPage": {
+    "title": "Bon retour !",
+    "emailLabel": "Adresse e-mail",
+    "emailPlaceholder": "bonjour@exemple.com",
+    "passwordLabel": "Mot de passe",
+    "passwordPlaceholder": "Votre mot de passe",
+    "keepLoggedIn": "Rester connecté",
+    "submit": "Connexion",
+    "noAccount": "Pas encore de compte ?",
+    "register": "Inscription"
+  },
+  "LocaleSwitcher": {
+    "aria": "Changer la langue"
+  }
+}
