@@ -16,7 +16,13 @@
     "keepLoggedIn": "Keep me logged in",
     "submit": "Sign in",
     "noAccount": "Don't have an account?",
-    "register": "Register"
+    "register": "Register",
+    "errors": {
+      "emptyFields": "Enter both email and password.",
+      "invalidCredentials": "Invalid email or password.",
+      "apiUnavailable": "Remote auth is not configured (AUTH_API_URL).",
+      "apiError": "Authentication service error. Please try again."
+    }
   },
   "LocaleSwitcher": {
     "aria": "Change language"

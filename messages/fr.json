@@ -16,7 +16,13 @@
     "keepLoggedIn": "Rester connecté",
     "submit": "Connexion",
     "noAccount": "Pas encore de compte ?",
-    "register": "Inscription"
+    "register": "Inscription",
+    "errors": {
+      "emptyFields": "Renseignez l’e-mail et le mot de passe.",
+      "invalidCredentials": "Identifiants incorrects.",
+      "apiUnavailable": "Authentification distante non configurée (AUTH_API_URL).",
+      "apiError": "Erreur du service d’authentification. Réessayez."
+    }
   },
   "LocaleSwitcher": {
     "aria": "Changer la langue"
