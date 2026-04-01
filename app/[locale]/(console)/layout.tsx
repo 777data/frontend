@@ -26,6 +26,7 @@ import {
 } from '@tabler/icons-react';
 import {
   Avatar,
+  Button,
   Burger,
   Container,
   Divider,
@@ -132,6 +133,62 @@ export default function ConsoleLayout({ children }: Props) {
       <span className={classes.linkLabel}>{t(`menu.${item.key}`)}</span>
     </Link>
   ));
+
+  const sectionHeaderMap: Record<
+    string,
+    { title: string; subtitle: string; action?: { label: string; href: `/${string}` } }
+  > = {
+    "/": {
+      title: t("menu.dashboard"),
+      subtitle: "Vue d'ensemble de votre activité et des indicateurs clés.",
+      action: { label: "Créer une alerte", href: "/citizen-alerts" },
+    },
+    "/citizen-alerts": {
+      title: t("menu.citizenAlerts"),
+      subtitle: "Suivez et traitez les alertes signalées par les citoyens.",
+    },
+    "/agenda": {
+      title: t("menu.agenda"),
+      subtitle: "Planifiez vos événements et échéances à venir.",
+      action: { label: "Nouvel événement", href: "/agenda" },
+    },
+    "/consultations": {
+      title: t("menu.consultations"),
+      subtitle: "Centralisez les consultations en cours et leur progression.",
+    },
+    "/messaging": {
+      title: t("menu.messaging"),
+      subtitle: "Retrouvez vos échanges et conversations récentes.",
+    },
+    "/publications": {
+      title: t("menu.publications"),
+      subtitle: "Gérez vos publications et suivez leur diffusion.",
+      action: { label: "Nouvelle publication", href: "/publications" },
+    },
+    "/reports": {
+      title: t("menu.reports"),
+      subtitle: "Analysez les signalements et priorisez les actions.",
+    },
+    "/my-tasks": {
+      title: t("menu.myTasks"),
+      subtitle: "Visualisez les tâches assignées et leur statut.",
+    },
+    "/account/settings": {
+      title: t("footer.settings"),
+      subtitle: "Configurez vos préférences et paramètres de compte.",
+    },
+  };
+
+  const accountMenuItem = rightMenuItems.find((item) => item.href === normalizedPathname);
+  const pageHeader = accountMenuItem
+    ? {
+        title: accountMenuItem.label,
+        subtitle: "Gérez les informations et actions liées à ce menu.",
+      }
+    : (sectionHeaderMap[normalizedPathname] ?? {
+        title: t("menu.dashboard"),
+        subtitle: "Consultez et pilotez les éléments de votre espace console.",
+      });
 
   return (
     <div className={classes.shell}>
@@ -246,6 +303,18 @@ export default function ConsoleLayout({ children }: Props) {
         </div>
 
         <div className={classes.contentArea}>
+          <Group className={classes.pageHeader} justify="space-between" align="flex-end">
+            <div>
+              <Text className={classes.pageTitle}>{pageHeader.title}</Text>
+              <Text className={classes.pageSubtitle}>{pageHeader.subtitle}</Text>
+            </div>
+            {pageHeader.action ? (
+              <Button component={Link} href={pageHeader.action.href}>
+                {pageHeader.action.label}
+              </Button>
+            ) : null}
+          </Group>
+
           {children}
         </div>
       </main>

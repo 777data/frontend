@@ -24,6 +24,22 @@
   background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-7));
 }
 
+.pageHeader {
+  margin-bottom: var(--mantine-spacing-lg);
+}
+
+.pageTitle {
+  font-size: clamp(1.3rem, 1.6vw, 1.8rem);
+  font-weight: 700;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  line-height: 1.2;
+}
+
+.pageSubtitle {
+  margin-top: var(--mantine-spacing-xs);
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-2));
+}
+
 .rightHeader {
   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
   border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
@@ -172,6 +188,11 @@
 
   .contentArea {
     padding: var(--mantine-spacing-md);
+  }
+
+  .pageHeader {
+    margin-bottom: var(--mantine-spacing-md);
+    align-items: flex-start;
   }
 
   .navbar {
