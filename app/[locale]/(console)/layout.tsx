@@ -5,16 +5,38 @@ import { useState } from "react";
 import Image from "next/image";
 import {
   IconAlertTriangle,
+  IconChevronDown,
   IconCalendarEvent,
   IconChecklist,
   IconClipboardText,
   IconFlag,
+  IconHeart,
   IconLayoutDashboard,
+  IconLogout,
+  IconMessage,
   IconMessageCircle,
   IconNews,
+  IconPlayerPause,
   IconSettings,
+  IconStar,
+  IconSwitchHorizontal,
+  IconTrash,
 } from '@tabler/icons-react';
-import { Code, Group, Text } from '@mantine/core';
+import {
+  Avatar,
+  Burger,
+  Container,
+  Divider,
+  Drawer,
+  Group,
+  Menu,
+  ScrollArea,
+  Tabs,
+  Text,
+  UnstyledButton,
+  useMantineTheme,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useTranslations } from "next-intl";
 import classes from './layout.module.css';
 
@@ -35,7 +57,11 @@ type Props = {
 
 export default function ConsoleLayout({ children }: Props) {
   const t = useTranslations("ConsoleLayout");
+  const theme = useMantineTheme();
   const [active, setActive] = useState("dashboard");
+  const [opened, { toggle, close }] = useDisclosure(false);
+  const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const user = { name: "David", image: "" };
 
   const links = data.map((item) => (
     <a
@@ -91,7 +117,104 @@ export default function ConsoleLayout({ children }: Props) {
         </div>
       </nav>
 
-      <main className={classes.main}>{children}</main>
+      <main className={classes.main}>
+        <div className={classes.rightHeader}>
+          <Container className={classes.rightHeaderMain} size="lg">
+            <Group justify="space-between">
+              <Burger
+                opened={opened}
+                onClick={toggle}
+                hiddenFrom="sm"
+                size="sm"
+                aria-label="Toggle navigation"
+              />
+
+              <Menu
+                width={260}
+                position="bottom-end"
+                transitionProps={{ transition: "pop-top-right" }}
+                onClose={() => setUserMenuOpened(false)}
+                onOpen={() => setUserMenuOpened(true)}
+                withinPortal
+              >
+                <Menu.Target>
+                  <UnstyledButton
+                    className={`${classes.user} ${userMenuOpened ? classes.userActive : ""}`}
+                  >
+                    <Group gap={7}>
+                      <Avatar src={user.image || undefined} alt={user.name} radius="xl" size={20} />
+                      <Text fw={500} size="sm" lh={1} mr={3}>
+                        {user.name}
+                      </Text>
+                      <IconChevronDown size={12} stroke={1.5} />
+                    </Group>
+                  </UnstyledButton>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item leftSection={<IconHeart size={16} color={theme.colors.red[6]} stroke={1.5} />}>
+                    Liked posts
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={<IconStar size={16} color={theme.colors.yellow[6]} stroke={1.5} />}
+                  >
+                    Saved posts
+                  </Menu.Item>
+                  <Menu.Item leftSection={<IconMessage size={16} color={theme.colors.blue[6]} stroke={1.5} />}>
+                    Your comments
+                  </Menu.Item>
+
+                  <Menu.Label>Settings</Menu.Label>
+                  <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
+                    Account settings
+                  </Menu.Item>
+                  <Menu.Item leftSection={<IconSwitchHorizontal size={16} stroke={1.5} />}>
+                    Change account
+                  </Menu.Item>
+                  <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Logout</Menu.Item>
+
+                  <Menu.Divider />
+
+                  <Menu.Label>Danger zone</Menu.Label>
+                  <Menu.Item leftSection={<IconPlayerPause size={16} stroke={1.5} />}>
+                    Pause subscription
+                  </Menu.Item>
+                  <Menu.Item color="red" leftSection={<IconTrash size={16} stroke={1.5} />}>
+                    Delete account
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
+          </Container>
+        </div>
+
+        <Drawer
+          opened={opened}
+          onClose={close}
+          size="100%"
+          padding="md"
+          title="Navigation"
+          hiddenFrom="sm"
+          zIndex={1000000}
+        >
+          <ScrollArea h="calc(100vh - 80px)" mx="-md">
+            <Divider my="sm" />
+            {data.map((item) => (
+              <a
+                href="#"
+                key={item.key}
+                className={classes.drawerLink}
+                onClick={(event) => event.preventDefault()}
+              >
+                {t(`menu.${item.key}`)}
+              </a>
+            ))}
+          </ScrollArea>
+        </Drawer>
+
+        <div className={classes.contentArea}>
+          {children}
+        </div>
+      </main>
     </div>
   );
 }

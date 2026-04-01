@@ -63,7 +63,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     >
       <body className="min-h-full flex flex-col">
         <NextIntlClientProvider messages={messages}>
-          <MantineProvider>{children}</MantineProvider>
+          <MantineProvider defaultColorScheme="light">{children}</MantineProvider>
         </NextIntlClientProvider>
       </body>
     </html>

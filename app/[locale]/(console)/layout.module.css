@@ -4,14 +4,72 @@
   min-height: 100vh;
   width: 100%;
   align-items: stretch;
+  background-color: light-dark(white, black);
 }
 
 .main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   overflow: auto;
+  padding: 0;
+  background-color: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8));
+}
+
+.contentArea {
+  flex: 1;
   padding: var(--mantine-spacing-lg);
-  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+}
+
+.rightHeader {
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  padding-top: var(--mantine-spacing-md);
+}
+
+.rightHeaderMain {
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.user {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-dark-0));
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 120ms ease;
+}
+
+.user:hover,
+.userActive {
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+}
+
+.tabs {
+  margin-top: var(--mantine-spacing-xs);
+}
+
+.tabsList {
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.tab {
+  border-top-left-radius: var(--mantine-radius-sm);
+  border-top-right-radius: var(--mantine-radius-sm);
+}
+
+.drawerLink {
+  display: block;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-md);
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+  border-radius: var(--mantine-radius-sm);
+  margin: 0 var(--mantine-spacing-md);
+}
+
+.drawerLink:hover {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }
 
 .navbar {
@@ -100,6 +158,10 @@
 /* ——— Petit écran : barre étroite, icônes seules ——— */
 @media (max-width: 48em) {
   .main {
+    padding: 0;
+  }
+
+  .contentArea {
     padding: var(--mantine-spacing-md);
   }
 
@@ -159,5 +221,9 @@
 
   .linkIcon {
     margin-right: 0;
+  }
+
+  .rightHeader {
+    padding-top: var(--mantine-spacing-sm);
   }
 }
