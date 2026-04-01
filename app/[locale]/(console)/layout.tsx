@@ -61,7 +61,6 @@ type Props = {
 export default function ConsoleLayout({ children }: Props) {
   const t = useTranslations("ConsoleLayout");
   const theme = useMantineTheme();
-  const [opened, { toggle, close }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const user = { name: "David", image: "" };
   const pathname = usePathname();
@@ -175,14 +174,6 @@ export default function ConsoleLayout({ children }: Props) {
         <div className={classes.rightHeader}>
           <Container className={classes.rightHeaderMain} size="lg">
             <Group justify="flex-end">
-              <Burger
-                opened={opened}
-                onClick={toggle}
-                hiddenFrom="sm"
-                size="sm"
-                aria-label="Toggle navigation"
-              />
-
               <Menu
                 width={260}
                 position="bottom-end"
@@ -253,31 +244,6 @@ export default function ConsoleLayout({ children }: Props) {
             </Group>
           </Container>
         </div>
-
-        <Drawer
-          opened={opened}
-          onClose={close}
-          size="100%"
-          padding="md"
-          title="Navigation"
-          hiddenFrom="sm"
-          zIndex={1000000}
-        >
-          <ScrollArea h="calc(100vh - 80px)" mx="-md">
-            <Divider my="sm" />
-            {data.map((item) => (
-              <Link
-                href={item.link as `/${string}`}
-                key={item.key}
-                className={classes.drawerLink}
-                data-active={normalizedPathname === item.link || undefined}
-                onClick={close}
-              >
-                {t(`menu.${item.key}`)}
-              </Link>
-            ))}
-          </ScrollArea>
-        </Drawer>
 
         <div className={classes.contentArea}>
           {children}
