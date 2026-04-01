@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useState } from "react";
+import Image from "next/image";
 import {
   Icon2fa,
   IconBellRinging,
@@ -55,15 +56,21 @@ export default function ConsoleLayout({ children }: Props) {
       <nav className={classes.navbar} aria-label="Console">
         <div className={classes.navbarMain}>
           <Group className={classes.header} justify="space-between" wrap="nowrap">
-            <Text component="span" fw={800} size="lg" className={classes.brandFull}>
-              Urblink
-            </Text>
-            <Text component="span" className={classes.brandShort} aria-hidden>
-              U
-            </Text>
-            <Code fw={700} className={classes.versionBadge}>
-              v3.1.2
-            </Code>
+            <Image
+              src="/urblink.png"
+              alt="Urblink"
+              width={120}
+              height={32}
+              className={classes.brandFull}
+            />
+            <Image
+              src="/logo.png"
+              alt=""
+              aria-hidden
+              width={36}
+              height={36}
+              className={classes.brandShort}
+            />
           </Group>
           {links}
         </div>
