@@ -73,6 +73,16 @@
   color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }
 
+.drawerLink[data-active] {
+  background-color: var(--mantine-color-blue-light);
+  color: var(--mantine-color-blue-light-color);
+}
+
+.userMenuItem[data-active] {
+  background-color: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  font-weight: 600;
+}
+
 .navbar {
   flex-shrink: 0;
   width: 300px;

@@ -3,6 +3,8 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   IconAlertTriangle,
   IconChevronDown,
@@ -38,17 +40,18 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useTranslations } from "next-intl";
+import { routing } from "@/i18n/routing";
 import classes from './layout.module.css';
 
 const data = [
-  { link: '', key: 'dashboard', icon: IconLayoutDashboard },
-  { link: '', key: 'citizenAlerts', icon: IconAlertTriangle },
-  { link: '', key: 'agenda', icon: IconCalendarEvent },
-  { link: '', key: 'consultations', icon: IconClipboardText },
-  { link: '', key: 'messaging', icon: IconMessageCircle },
-  { link: '', key: 'publications', icon: IconNews },
-  { link: '', key: 'reports', icon: IconFlag },
-  { link: '', key: 'myTasks', icon: IconChecklist },
+  { link: '/', key: 'dashboard', icon: IconLayoutDashboard },
+  { link: '/citizen-alerts', key: 'citizenAlerts', icon: IconAlertTriangle },
+  { link: '/agenda', key: 'agenda', icon: IconCalendarEvent },
+  { link: '/consultations', key: 'consultations', icon: IconClipboardText },
+  { link: '/messaging', key: 'messaging', icon: IconMessageCircle },
+  { link: '/publications', key: 'publications', icon: IconNews },
+  { link: '/reports', key: 'reports', icon: IconFlag },
+  { link: '/my-tasks', key: 'myTasks', icon: IconChecklist },
 ];
 
 type Props = {
@@ -58,26 +61,77 @@ type Props = {
 export default function ConsoleLayout({ children }: Props) {
   const t = useTranslations("ConsoleLayout");
   const theme = useMantineTheme();
-  const [active, setActive] = useState("dashboard");
   const [opened, { toggle, close }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const user = { name: "David", image: "" };
+  const pathname = usePathname();
+
+  const localePrefixPattern = new RegExp(`^/(${routing.locales.join("|")})(?=/|$)`);
+  const normalizedPathname = pathname.replace(localePrefixPattern, "") || "/";
+  const settingsPath = "/account/settings";
+
+  const rightMenuItems = [
+    {
+      key: "liked-posts",
+      href: "/account/liked-posts",
+      label: "Liked posts",
+      icon: <IconHeart size={16} color={theme.colors.red[6]} stroke={1.5} />,
+    },
+    {
+      key: "saved-posts",
+      href: "/account/saved-posts",
+      label: "Saved posts",
+      icon: <IconStar size={16} color={theme.colors.yellow[6]} stroke={1.5} />,
+    },
+    {
+      key: "comments",
+      href: "/account/comments",
+      label: "Your comments",
+      icon: <IconMessage size={16} color={theme.colors.blue[6]} stroke={1.5} />,
+    },
+    {
+      key: "settings",
+      href: "/account/settings",
+      label: "Account settings",
+      icon: <IconSettings size={16} stroke={1.5} />,
+    },
+    {
+      key: "switch-account",
+      href: "/account/switch-account",
+      label: "Change account",
+      icon: <IconSwitchHorizontal size={16} stroke={1.5} />,
+    },
+    {
+      key: "logout",
+      href: "/account/logout",
+      label: "Logout",
+      icon: <IconLogout size={16} stroke={1.5} />,
+    },
+    {
+      key: "pause-subscription",
+      href: "/account/pause-subscription",
+      label: "Pause subscription",
+      icon: <IconPlayerPause size={16} stroke={1.5} />,
+    },
+    {
+      key: "delete-account",
+      href: "/account/delete-account",
+      label: "Delete account",
+      icon: <IconTrash size={16} stroke={1.5} />,
+    },
+  ] as const;
 
   const links = data.map((item) => (
-    <a
+    <Link
       className={classes.link}
       aria-label={t(`menu.${item.key}`)}
-      data-active={item.key === active || undefined}
-      href={item.link}
+      data-active={normalizedPathname === item.link || undefined}
+      href={item.link as `/${string}`}
       key={item.key}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.key);
-      }}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} aria-hidden />
       <span className={classes.linkLabel}>{t(`menu.${item.key}`)}</span>
-    </a>
+    </Link>
   ));
 
   return (
@@ -105,15 +159,15 @@ export default function ConsoleLayout({ children }: Props) {
         </div>
 
         <div className={classes.footer}>
-          <a
-            href="#"
+          <Link
+            href={settingsPath}
             className={classes.link}
             aria-label={t("footer.settings")}
-            onClick={(event) => event.preventDefault()}
+            data-active={normalizedPathname === settingsPath || undefined}
           >
             <IconSettings className={classes.linkIcon} stroke={1.5} aria-hidden />
             <span className={classes.linkLabel}>{t("footer.settings")}</span>
-          </a>
+          </Link>
         </div>
       </nav>
 
@@ -151,36 +205,49 @@ export default function ConsoleLayout({ children }: Props) {
                   </UnstyledButton>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Item leftSection={<IconHeart size={16} color={theme.colors.red[6]} stroke={1.5} />}>
-                    Liked posts
-                  </Menu.Item>
-                  <Menu.Item
-                    leftSection={<IconStar size={16} color={theme.colors.yellow[6]} stroke={1.5} />}
-                  >
-                    Saved posts
-                  </Menu.Item>
-                  <Menu.Item leftSection={<IconMessage size={16} color={theme.colors.blue[6]} stroke={1.5} />}>
-                    Your comments
-                  </Menu.Item>
+                  {rightMenuItems.slice(0, 3).map((item) => (
+                    <Menu.Item
+                      key={item.key}
+                      component={Link}
+                      href={item.href as `/${string}`}
+                      leftSection={item.icon}
+                      className={classes.userMenuItem}
+                      data-active={normalizedPathname === item.href || undefined}
+                    >
+                      {item.label}
+                    </Menu.Item>
+                  ))}
 
                   <Menu.Label>Settings</Menu.Label>
-                  <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
-                    Account settings
-                  </Menu.Item>
-                  <Menu.Item leftSection={<IconSwitchHorizontal size={16} stroke={1.5} />}>
-                    Change account
-                  </Menu.Item>
-                  <Menu.Item leftSection={<IconLogout size={16} stroke={1.5} />}>Logout</Menu.Item>
+                  {rightMenuItems.slice(3, 6).map((item) => (
+                    <Menu.Item
+                      key={item.key}
+                      component={Link}
+                      href={item.href as `/${string}`}
+                      leftSection={item.icon}
+                      className={classes.userMenuItem}
+                      data-active={normalizedPathname === item.href || undefined}
+                    >
+                      {item.label}
+                    </Menu.Item>
+                  ))}
 
                   <Menu.Divider />
 
                   <Menu.Label>Danger zone</Menu.Label>
-                  <Menu.Item leftSection={<IconPlayerPause size={16} stroke={1.5} />}>
-                    Pause subscription
-                  </Menu.Item>
-                  <Menu.Item color="red" leftSection={<IconTrash size={16} stroke={1.5} />}>
-                    Delete account
-                  </Menu.Item>
+                  {rightMenuItems.slice(6).map((item) => (
+                    <Menu.Item
+                      key={item.key}
+                      component={Link}
+                      href={item.href as `/${string}`}
+                      leftSection={item.icon}
+                      className={classes.userMenuItem}
+                      data-active={normalizedPathname === item.href || undefined}
+                      color={item.key === "delete-account" ? "red" : undefined}
+                    >
+                      {item.label}
+                    </Menu.Item>
+                  ))}
                 </Menu.Dropdown>
               </Menu>
             </Group>
@@ -199,14 +266,15 @@ export default function ConsoleLayout({ children }: Props) {
           <ScrollArea h="calc(100vh - 80px)" mx="-md">
             <Divider my="sm" />
             {data.map((item) => (
-              <a
-                href="#"
+              <Link
+                href={item.link as `/${string}`}
                 key={item.key}
                 className={classes.drawerLink}
-                onClick={(event) => event.preventDefault()}
+                data-active={normalizedPathname === item.link || undefined}
+                onClick={close}
               >
                 {t(`menu.${item.key}`)}
-              </a>
+              </Link>
             ))}
           </ScrollArea>
         </Drawer>
