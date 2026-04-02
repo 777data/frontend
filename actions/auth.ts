@@ -19,7 +19,7 @@ type AuthResult = { ok: true } | { ok: false; error: LoginErrorCode };
 /**
  * Mock en développement. En production, définir AUTH_API_URL et implémenter l’appel réel.
  */
-async function authenticateWithApi(
+async function authenticate(
   _email: string,
   _password: string,
   _remember: boolean,
@@ -52,21 +52,6 @@ async function authenticateWithApi(
   }
 }
 
-/** Comptes de démo + règles souples en dev (voir commentaire). */
-function authenticateWithMock(email: string, password: string): AuthResult {
-  const normalizedEmail = email.trim().toLowerCase();
-
-  if (normalizedEmail === "dev@urblink.local" && password === "dev") {
-    return { ok: true };
-  }
-
-  if (email.includes("@") && password.length >= 4) {
-    return { ok: true };
-  }
-
-  return { ok: false, error: "INVALID_CREDENTIALS" };
-}
-
 export async function loginAction(
   _prev: LoginActionState,
   formData: FormData,
@@ -79,11 +64,7 @@ export async function loginAction(
     return { ok: false, error: "EMPTY_FIELDS" };
   }
 
-  const useMock = process.env.NODE_ENV === "development";
-
-  const result = useMock
-    ? authenticateWithMock(email, password)
-    : await authenticateWithApi(email, password, remember);
+  const result = await authenticate(email, password, remember);
 
   if (!result.ok) {
     return { ok: false, error: result.error };
