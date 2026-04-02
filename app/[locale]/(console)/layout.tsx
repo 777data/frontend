@@ -5,190 +5,65 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  IconAlertTriangle,
-  IconChevronDown,
-  IconCalendarEvent,
-  IconChecklist,
-  IconClipboardText,
-  IconFlag,
-  IconHeart,
-  IconLayoutDashboard,
-  IconLogout,
-  IconMessage,
-  IconMessageCircle,
-  IconNews,
-  IconPlayerPause,
-  IconSettings,
-  IconStar,
-  IconSwitchHorizontal,
-  IconTrash,
-} from '@tabler/icons-react';
+import { IconChevronDown } from '@tabler/icons-react';
+import type { MantineTheme } from "@mantine/core";
 import {
   Avatar,
-  Button,
-  Burger,
   Container,
-  Divider,
-  Drawer,
   Group,
   Menu,
-  ScrollArea,
-  Tabs,
   Text,
   UnstyledButton,
   useMantineTheme,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { useTranslations } from "next-intl";
+import {
+  consoleAccountMenuItems,
+  consoleFooterMenuItem,
+  consoleMainMenuItems,
+  type ConsoleAccountMenuItem,
+} from "@/components/console/console-menu.config";
+import { ConsolePageHeader } from "@/components/console/console-page-header";
 import { routing } from "@/i18n/routing";
 import classes from './layout.module.css';
-
-const data = [
-  { link: '/', key: 'dashboard', icon: IconLayoutDashboard },
-  { link: '/citizen-alerts', key: 'citizenAlerts', icon: IconAlertTriangle },
-  { link: '/agenda', key: 'agenda', icon: IconCalendarEvent },
-  { link: '/consultations', key: 'consultations', icon: IconClipboardText },
-  { link: '/messaging', key: 'messaging', icon: IconMessageCircle },
-  { link: '/publications', key: 'publications', icon: IconNews },
-  { link: '/reports', key: 'reports', icon: IconFlag },
-  { link: '/my-tasks', key: 'myTasks', icon: IconChecklist },
-];
 
 type Props = {
   children: ReactNode;
 };
 
+function accountMenuIconProps(item: ConsoleAccountMenuItem, theme: MantineTheme) {
+  if (!item.iconTint) return {};
+  const tones = theme.colors[item.iconTint.color];
+  return { color: tones[item.iconTint.shade] };
+}
+
 export default function ConsoleLayout({ children }: Props) {
   const t = useTranslations("ConsoleLayout");
   const theme = useMantineTheme();
+  const FooterNavIcon = consoleFooterMenuItem.icon;
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const user = { name: "David", image: "" };
   const pathname = usePathname();
 
   const localePrefixPattern = new RegExp(`^/(${routing.locales.join("|")})(?=/|$)`);
   const normalizedPathname = pathname.replace(localePrefixPattern, "") || "/";
-  const settingsPath = "/account/settings";
 
-  const rightMenuItems = [
-    {
-      key: "liked-posts",
-      href: "/account/liked-posts",
-      label: "Liked posts",
-      icon: <IconHeart size={16} color={theme.colors.red[6]} stroke={1.5} />,
-    },
-    {
-      key: "saved-posts",
-      href: "/account/saved-posts",
-      label: "Saved posts",
-      icon: <IconStar size={16} color={theme.colors.yellow[6]} stroke={1.5} />,
-    },
-    {
-      key: "comments",
-      href: "/account/comments",
-      label: "Your comments",
-      icon: <IconMessage size={16} color={theme.colors.blue[6]} stroke={1.5} />,
-    },
-    {
-      key: "settings",
-      href: "/account/settings",
-      label: "Account settings",
-      icon: <IconSettings size={16} stroke={1.5} />,
-    },
-    {
-      key: "switch-account",
-      href: "/account/switch-account",
-      label: "Change account",
-      icon: <IconSwitchHorizontal size={16} stroke={1.5} />,
-    },
-    {
-      key: "logout",
-      href: "/account/logout",
-      label: "Logout",
-      icon: <IconLogout size={16} stroke={1.5} />,
-    },
-    {
-      key: "pause-subscription",
-      href: "/account/pause-subscription",
-      label: "Pause subscription",
-      icon: <IconPlayerPause size={16} stroke={1.5} />,
-    },
-    {
-      key: "delete-account",
-      href: "/account/delete-account",
-      label: "Delete account",
-      icon: <IconTrash size={16} stroke={1.5} />,
-    },
-  ] as const;
+  const activityItems = consoleAccountMenuItems.filter((i) => i.group === "activity");
+  const settingsItems = consoleAccountMenuItems.filter((i) => i.group === "settings");
+  const dangerItems = consoleAccountMenuItems.filter((i) => i.group === "danger");
 
-  const links = data.map((item) => (
+  const links = consoleMainMenuItems.map((item) => (
     <Link
       className={classes.link}
-      aria-label={t(`menu.${item.key}`)}
+      aria-label={t(item.title)}
       data-active={normalizedPathname === item.link || undefined}
-      href={item.link as `/${string}`}
+      href={item.link}
       key={item.key}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} aria-hidden />
-      <span className={classes.linkLabel}>{t(`menu.${item.key}`)}</span>
+      <span className={classes.linkLabel}>{t(item.title)}</span>
     </Link>
   ));
-
-  const sectionHeaderMap: Record<
-    string,
-    { title: string; subtitle: string; action?: { label: string; href: `/${string}` } }
-  > = {
-    "/": {
-      title: t("menu.dashboard"),
-      subtitle: "Vue d'ensemble de votre activité et des indicateurs clés.",
-      action: { label: "Créer une alerte", href: "/citizen-alerts" },
-    },
-    "/citizen-alerts": {
-      title: t("menu.citizenAlerts"),
-      subtitle: "Suivez et traitez les alertes signalées par les citoyens.",
-    },
-    "/agenda": {
-      title: t("menu.agenda"),
-      subtitle: "Planifiez vos événements et échéances à venir.",
-      action: { label: "Nouvel événement", href: "/agenda" },
-    },
-    "/consultations": {
-      title: t("menu.consultations"),
-      subtitle: "Centralisez les consultations en cours et leur progression.",
-    },
-    "/messaging": {
-      title: t("menu.messaging"),
-      subtitle: "Retrouvez vos échanges et conversations récentes.",
-    },
-    "/publications": {
-      title: t("menu.publications"),
-      subtitle: "Gérez vos publications et suivez leur diffusion.",
-      action: { label: "Nouvelle publication", href: "/publications" },
-    },
-    "/reports": {
-      title: t("menu.reports"),
-      subtitle: "Analysez les signalements et priorisez les actions.",
-    },
-    "/my-tasks": {
-      title: t("menu.myTasks"),
-      subtitle: "Visualisez les tâches assignées et leur statut.",
-    },
-    "/account/settings": {
-      title: t("footer.settings"),
-      subtitle: "Configurez vos préférences et paramètres de compte.",
-    },
-  };
-
-  const accountMenuItem = rightMenuItems.find((item) => item.href === normalizedPathname);
-  const pageHeader = accountMenuItem
-    ? {
-        title: accountMenuItem.label,
-        subtitle: "Gérez les informations et actions liées à ce menu.",
-      }
-    : (sectionHeaderMap[normalizedPathname] ?? {
-        title: t("menu.dashboard"),
-        subtitle: "Consultez et pilotez les éléments de votre espace console.",
-      });
 
   return (
     <div className={classes.shell}>
@@ -216,13 +91,13 @@ export default function ConsoleLayout({ children }: Props) {
 
         <div className={classes.footer}>
           <Link
-            href={settingsPath}
+            href={consoleFooterMenuItem.link}
             className={classes.link}
-            aria-label={t("footer.settings")}
-            data-active={normalizedPathname === settingsPath || undefined}
+            aria-label={t(consoleFooterMenuItem.title)}
+            data-active={normalizedPathname === consoleFooterMenuItem.link || undefined}
           >
-            <IconSettings className={classes.linkIcon} stroke={1.5} aria-hidden />
-            <span className={classes.linkLabel}>{t("footer.settings")}</span>
+            <FooterNavIcon className={classes.linkIcon} stroke={1.5} aria-hidden />
+            <span className={classes.linkLabel}>{t(consoleFooterMenuItem.title)}</span>
           </Link>
         </div>
       </nav>
@@ -253,47 +128,47 @@ export default function ConsoleLayout({ children }: Props) {
                   </UnstyledButton>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  {rightMenuItems.slice(0, 3).map((item) => (
+                  {activityItems.map((item) => (
                     <Menu.Item
                       key={item.key}
                       component={Link}
-                      href={item.href as `/${string}`}
-                      leftSection={item.icon}
+                      href={item.link}
+                      leftSection={<item.icon size={16} stroke={1.5} {...accountMenuIconProps(item, theme)} />}
                       className={classes.userMenuItem}
-                      data-active={normalizedPathname === item.href || undefined}
+                      data-active={normalizedPathname === item.link || undefined}
                     >
-                      {item.label}
+                      {t(item.title)}
                     </Menu.Item>
                   ))}
 
-                  <Menu.Label>Settings</Menu.Label>
-                  {rightMenuItems.slice(3, 6).map((item) => (
+                  <Menu.Label>{t("userMenuGroup.settings")}</Menu.Label>
+                  {settingsItems.map((item) => (
                     <Menu.Item
                       key={item.key}
                       component={Link}
-                      href={item.href as `/${string}`}
-                      leftSection={item.icon}
+                      href={item.link}
+                      leftSection={<item.icon size={16} stroke={1.5} {...accountMenuIconProps(item, theme)} />}
                       className={classes.userMenuItem}
-                      data-active={normalizedPathname === item.href || undefined}
+                      data-active={normalizedPathname === item.link || undefined}
                     >
-                      {item.label}
+                      {t(item.title)}
                     </Menu.Item>
                   ))}
 
                   <Menu.Divider />
 
-                  <Menu.Label>Danger zone</Menu.Label>
-                  {rightMenuItems.slice(6).map((item) => (
+                  <Menu.Label>{t("userMenuGroup.danger")}</Menu.Label>
+                  {dangerItems.map((item) => (
                     <Menu.Item
                       key={item.key}
                       component={Link}
-                      href={item.href as `/${string}`}
-                      leftSection={item.icon}
+                      href={item.link}
+                      leftSection={<item.icon size={16} stroke={1.5} {...accountMenuIconProps(item, theme)} />}
                       className={classes.userMenuItem}
-                      data-active={normalizedPathname === item.href || undefined}
+                      data-active={normalizedPathname === item.link || undefined}
                       color={item.key === "delete-account" ? "red" : undefined}
                     >
-                      {item.label}
+                      {t(item.title)}
                     </Menu.Item>
                   ))}
                 </Menu.Dropdown>
@@ -303,17 +178,11 @@ export default function ConsoleLayout({ children }: Props) {
         </div>
 
         <div className={classes.contentArea}>
-          <Group className={classes.pageHeader} justify="space-between" align="flex-end">
-            <div>
-              <Text className={classes.pageTitle}>{pageHeader.title}</Text>
-              <Text className={classes.pageSubtitle}>{pageHeader.subtitle}</Text>
-            </div>
-            {pageHeader.action ? (
-              <Button component={Link} href={pageHeader.action.href}>
-                {pageHeader.action.label}
-              </Button>
-            ) : null}
-          </Group>
+          <ConsolePageHeader
+            normalizedPathname={normalizedPathname}
+            authorName={user.name}
+            authorImage={user.image}
+          />
 
           {children}
         </div>

@@ -40,6 +40,47 @@
     },
     "footer": {
       "settings": "Settings"
+    },
+    "pageSubtitles": {
+      "dashboard": "Overview of your activity and key indicators.",
+      "citizenAlerts": "Track and handle citizen-reported alerts.",
+      "agenda": "Plan your upcoming events and deadlines.",
+      "consultations": "Centralize ongoing consultations and their progress.",
+      "messaging": "Find your recent exchanges and conversations.",
+      "publications": "Manage your posts and track their reach.",
+      "reports": "Review reports and prioritize actions.",
+      "myTasks": "See assigned tasks and their status.",
+      "accountSettings": "Configure your preferences and account settings.",
+      "accountMenu": "Manage information and actions for this menu item.",
+      "fallback": "Explore and manage your console."
+    },
+    "pageActions": {
+      "createAlert": "Create alert",
+      "newEvent": "New event"
+    },
+    "userMenu": {
+      "likedPosts": "Liked posts",
+      "savedPosts": "Saved posts",
+      "yourComments": "Your comments",
+      "accountSettings": "Account settings",
+      "changeAccount": "Change account",
+      "logout": "Logout",
+      "pauseSubscription": "Pause subscription",
+      "deleteAccount": "Delete account"
+    },
+    "userMenuGroup": {
+      "settings": "Settings",
+      "danger": "Danger zone"
+    },
+    "postDialog": {
+      "actionButton": "New post",
+      "title": "Create post",
+      "asYourself": "visible to your audience",
+      "placeholder": "What's on your mind?",
+      "addPhotoVideo": "Add photo or video",
+      "removeMedia": "Remove media",
+      "cancel": "Cancel",
+      "publish": "Post"
     }
   }
 }

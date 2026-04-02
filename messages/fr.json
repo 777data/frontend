@@ -40,6 +40,47 @@
     },
     "footer": {
       "settings": "Paramétrage"
+    },
+    "pageSubtitles": {
+      "dashboard": "Vue d'ensemble de votre activité et des indicateurs clés.",
+      "citizenAlerts": "Suivez et traitez les alertes signalées par les citoyens.",
+      "agenda": "Planifiez vos événements et échéances à venir.",
+      "consultations": "Centralisez les consultations en cours et leur progression.",
+      "messaging": "Retrouvez vos échanges et conversations récentes.",
+      "publications": "Gérez vos publications et suivez leur diffusion.",
+      "reports": "Analysez les signalements et priorisez les actions.",
+      "myTasks": "Visualisez les tâches assignées et leur statut.",
+      "accountSettings": "Configurez vos préférences et paramètres de compte.",
+      "accountMenu": "Gérez les informations et actions liées à ce menu.",
+      "fallback": "Consultez et pilotez les éléments de votre espace console."
+    },
+    "pageActions": {
+      "createAlert": "Créer une alerte",
+      "newEvent": "Nouvel événement"
+    },
+    "userMenu": {
+      "likedPosts": "Publications aimées",
+      "savedPosts": "Enregistrements",
+      "yourComments": "Vos commentaires",
+      "accountSettings": "Paramètres du compte",
+      "changeAccount": "Changer de compte",
+      "logout": "Déconnexion",
+      "pauseSubscription": "Suspendre l’abonnement",
+      "deleteAccount": "Supprimer le compte"
+    },
+    "userMenuGroup": {
+      "settings": "Paramètres",
+      "danger": "Zone sensible"
+    },
+    "postDialog": {
+      "actionButton": "Nouvelle publication",
+      "title": "Créer une publication",
+      "asYourself": "visible par votre audience",
+      "placeholder": "Quoi de neuf ?",
+      "addPhotoVideo": "Ajouter une photo ou une vidéo",
+      "removeMedia": "Retirer le média",
+      "cancel": "Annuler",
+      "publish": "Publier"
     }
   }
 }
